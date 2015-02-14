@@ -1,0 +1,19 @@
+{
+    "name": "akdelf/urlparser",
+    "description": "Quick MVC router without regular. Standart role: controller/action/params",
+    "homepage": "https://github.com/akdelf/urlparser",
+    "keywords": ["Router, MVC"],
+    "type": "library",
+    "license": "MIT",
+	"authors": [
+		{
+			"name": "AK Delfin"
+		}
+	],
+	"require": {
+		"php": ">=5.2"
+	},
+    "autoload": {
+        "files": ["urlparser.php"]
+    }
+}
