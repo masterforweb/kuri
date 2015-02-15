@@ -20,10 +20,11 @@ RETURN:
  - SHORT FUNC: find function $control 
 
 
-[EXAMPLE FUNCTIONS]
+[EXAMPLE FUNCTION]
 
 require 'vendor/akdelf/kuri/kuri.php';
-$result = action();
+$app = new kURI();
+$app->action();
 
 function main() {
 	echo 'mainpage';	
@@ -34,7 +35,7 @@ function main() {
 path: domain.my/news/id/$id
 
 require 'vendor/akdelf/kuri/kuri.php';
-$result = action();
+$app = new kURI();
 
 
 class news {
