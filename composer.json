@@ -1,5 +1,5 @@
 {
-    "name": "akdelf/urlparser",
+    "name": "akdelf/kuri",
     "description": "Autorouting without regular. MVC standart role: controller/action/params. Quick start",
     "homepage": "https://github.com/akdelf/urlparser",
     "keywords": ["microframework","rest","router","php quick start"],
