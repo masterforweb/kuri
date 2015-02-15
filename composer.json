@@ -1,7 +1,7 @@
 {
     "name": "akdelf/kuri",
     "description": "Autorouting without regular. MVC standart role: controller/action/params. Quick start",
-    "homepage": "https://github.com/akdelf/urlparser",
+    "homepage": "https://github.com/akdelf/kuri",
     "keywords": ["microframework","rest","router","php quick start"],
     "type": "library",
     "license": "MIT",
@@ -15,6 +15,6 @@
 		"php": ">=5.2"
 	},
     "autoload": {
-        "files": ["urlparser.php"]
+        "files": ["kuri.php"]
     }
 }
