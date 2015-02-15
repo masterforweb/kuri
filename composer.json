@@ -1,14 +1,15 @@
 {
     "name": "akdelf/urlparser",
-    "description": "Quick MVC router without regular. Standart role: controller/action/params",
+    "description": "Autorouting without regular. MVC standart role: controller/action/params. Quick start",
     "homepage": "https://github.com/akdelf/urlparser",
-    "keywords": ["Router, MVC"],
+    "keywords": ["microframework","rest","router","php quick start"],
     "type": "library",
     "license": "MIT",
 	"authors": [
 		{
-			"name": "AK Delfin"
-		}
+			"name": "AK Delfin",
+            "email": "masterforweb@hotmail.com"
+    	}
 	],
 	"require": {
 		"php": ">=5.2"

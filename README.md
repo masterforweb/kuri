@@ -1,91 +1,66 @@
-## URLPARSER
+## kURI
 
 PHP >= 5.2.0
 
-Quickstart MVC router without regular. MVC standart role: _controller/action/params_
+1. Autorouting without regular. MVC standart role: controller/action/params
+2. Minimum code - maximum speed 
 
-Return result array ( _'protocol', 'domain', 'method', 'control', 'action', 'params'_ )
 
-* protocol (http, https)
+RETURN:
+* shema (http, https)
 * domain (default _$_SERVER['QUERY_STRING']_)
 * method (GET, POST ...)
 * permanent MVC rule: control/action/params
 
-[SHEME FIND FUNCTION]
+[Auto Search function]
 
  - CLASSIC: find class $control and method $action
- - REST: find class $control and method (show, delete)
+ - REST: find class $control and method (get, post)
  - SMALL APP: find function $control_$action
- - SHORT FUNC: find function control 
+ - SHORT FUNC: find function $control 
 
 
-[EXAMPLE]
+[EXAMPLE FUNCTIONS]
 
 require 'vendor/akdelf/kuri/kuri.php';
-$result = action('http://www.argumenti.ru/rss/an/yandexnews');
+$result = action();
 
-print_r($result);
-
-----------------------------------------------------------------
-Array
-(
-    [protocol] => http
-    [domain] => argumenti.ru
-    [control] => rss
-    [action] => an
-    [params] => Array
-        (
-          [0] => yandexnews
-        )
+function main() {
+	echo 'mainpage';	
+}
 
 
-------------------------------------------------
+[EXAMPLE MVC CLASS]
+path: domain.my/news/id/$id
+
+require 'vendor/akdelf/kuri/kuri.php';
+$result = action();
 
 
-
-Classic example:
-
-path: rss/type/yandexnews
-
-class rss {
+class news {
 	
-	function type($name = 'yandexnews'){
-
-	}
+	function id($id){
+		echo 'ID ='.$id;
+	}	
 
 }
 
 
-REST example:
+[EXAMPLE AUTO RESTfull CLASS]
 
-path: rss/yandexnews
+require 'vendor/akdelf/kuri/kuri.php';
+$result = action();
 
-class rss {
+class news {
 	
-	function show($name = 'yandexnews'){
+	function get($id){
+		echo 'ID ='.$id;
+	}
+
+	function post($title, $text) {
+		$sql = "INSERT INTO `news` (`title`, `name`) VALUES($title, $text);";
 
 	}
+
 
 }
-
-
-
-Function example 1:
-
-path: rss/type/yandexnews
-
-	function rss_type() {
-	
-	}
-
-
-Function example 1:
-
-path: rss/yandexnews
-
-	function rss() {
-
-	}
-
-
-
