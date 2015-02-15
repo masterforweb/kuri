@@ -64,8 +64,6 @@
 		
 		function findfunc($items = array(), $method = "get") {
 
-			print_r($items);
-
 			$size = sizeof($items);
 			$action = 'index';
 			
@@ -134,7 +132,7 @@
 
 		function loadfunc($func, $class = False, $args = array()) {
 
-			if ($class == null) {
+			if ($class == False) {
 				if (is_array($args) and sizeof($args) > 0)
 					return call_user_func_array($func, $args);
 				else
