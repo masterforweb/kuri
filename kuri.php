@@ -17,9 +17,6 @@
 			static $params = array();
 
 
-
-			
-
 			function parser($uri = null) {
 
 				$result = array();
@@ -44,21 +41,7 @@
 				$result['method'] = strtolower($method);
 
 				if ($result['path'] !== '/') {
-					$items = explode('/', trim($result['path'], '/'));
-					$sized = sizeof($items);
-					if ($sized > 0) {
-						$result['controller'] = array_shift($items);
-						if ($sized > 1) {
-							$result['items'] = $items;	
-						}	
-						/*if ($sized > 1) {
-							$result['action'] = array_shift($items);
-							if ($sized > 2) {
-								$result['items'] = $items;
-							}
-						}*/	
-					}
-
+					$result['items'] = explode('/', trim($result['path'], '/'));
 				}
 
 				return $result;
@@ -67,63 +50,74 @@
 
 
 		
-		function action() {
-
-			$result = $this->parser();
-
+		function run() {
 			
-			if (!isset($result['controller'])){
-				$result['controller'] = 'main';
-				$result['items'] = array('index');
+			$items = $this->parser();
+			$result = $this->findfunc($items['items'], $items['method']);
+			$this->loadfunc($result['func'], $result['class'], $result['args']);
+			
+
+		}
+
+
+		
+		
+		function findfunc($items = array(), $method = "get") {
+
+			print_r($items);
+
+			$size = sizeof($items);
+			$action = 'index';
+			
+			if ($size == 0) {// mainpage
+				$cname = 'main';
+			}	
+			else {
+				$cname = array_shift($items);
+				if ($size > 2)
+					$action = $items[0];
 			}
 
-			
-			$cname = $result['controller'];
-
-			/*if (!isset($result['action']))
-				$result['action'] = 'index';*/
-			$action = $result['items'][0];	
-			
-			
 			if ($control = $this->loadclass($cname)){ //autoload class
 				
 				if (method_exists($control, $action)){
-					$action = array_shift($items);
-					return $this->loadfunc($action, $cname, $result['items']); // classic MVC routing
+					if ($size > 2)
+						$action = array_shift($items);
+					$func = $action;
+					$args = $items;
 				}
-				
-				if (method_exists($control, $result['method'])){ //REST API post, get ... 
-					return $this->loadfunc($action, $cname, $result['items']);
-				}
-
-			}
-
-			/*
-			** microframework style
-			*/
-						
-			$fname = $result['controller'].'_'.$result['action'];
-						
-			if (function_exists($fname)){ //loadfunction
-				$action = array_shift($items);
-				return $this->loadfunc($fname, null, $result['items']);
-			}
-
-			$fname =  $result['controller'].'_'.$result['method'];
-			if (function_exists($fname)){ //loadfunction
-				return $this->loadfunc($fname, null, $result['items']);
-			}
-
-			$fname =  $result['controller'];
-			if (function_exists($fname)){ //loadfunction
-				return $this->loadfunc($fname, null, $result['items']);
-			}			
-
+				elseif (method_exists($control, $method)){ //REST API post, get ... 
+					$func = $method;
+					$args =  $items;
+				}	
 			
-		
+				if ($func)
+					return array('class'=>$cname, 'func'=>$func, 'args'=>$args);
+
+			}
+
+				
+			if (function_exists($func = $cname.'_'.$action)){
+				$action = array_shift($items);
+				$args = $items;
+			}
+			elseif (function_exists($func = $cname.'_'.$method)){
+				$args = $items;
+			}
+			elseif (function_exists($func = $cname)){
+				$args = $items;
+			}	
+			else
+				return $this->er404();
+					
+			return array('class'=>False, 'func'=>$fname, 'args'=>$arguments);	
+					
+
 		}
 
-		
+
+
+
 		function loadclass($cname){
 
 			if (!class_exists($cname)) {
@@ -138,7 +132,7 @@
 		}
 		
 
-		function loadfunc($func, $class=null, $args = array()) {
+		function loadfunc($func, $class = False, $args = array()) {
 
 			if ($class == null) {
 				if (is_array($args) and sizeof($args) > 0)
@@ -167,7 +161,7 @@
 
 
 		function er404() {
-			echo '404 страница не существует';
+			echo '404 no find page';
 		}  
 
 
