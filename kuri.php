@@ -5,51 +5,125 @@
 		* @license http://www.opensource.org/licenses/mit-license.html  MIT License
 		* @author АК Delfin <masterforweb@hotmail.com>
 		*/
+		
 
 
-		class kURI {
+		function kparser($uri) {
 
+			$result = array();
 			
-			/**
-			* return scheme, host, path, controller, action, items 
-			*/
-
-			static $params = array();
-
-
-			function parser($uri = null) {
-
-				$result = array();
-				$method = 'get'; /* defaul method get*/
-
-				if ($uri == null) { // parse current url 
-					if (isset($_SERVER['QUERY_STRING']) and $_SERVER['QUERY_STRING'] !== '')
-						$uri = $_SERVER['QUERY_STRING'];
-					elseif(isset($_SERVER['PATH_INFO']) and $_SERVER['PATH_INFO'] !== '')
-						$uri = $_SERVER['PATH_INFO'];
-					else
-						$uri = '';
-
-					if (isset($_SERVER['REQUEST_METHOD']))
-						$method = $_SERVER['REQUEST_METHOD'];
-
-				}
-
-				$uri = $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['SERVER_NAME'].$uri.'/';
-
-				$result = parse_url(urldecode($uri));
-				$result['method'] = strtolower($method);
-
+			$result = parse_url(urldecode($uri));
+			
 				if ($result['path'] !== '/') {
 					$result['items'] = explode('/', trim($result['path'], '/'));
 				}
 
 				return $result;
+		}
 
-			}
+		
+		/**
+		* current url (k - current url)
+		*/
+
+		function kuri() {
+			
+
+			if (isset($_SERVER['QUERY_STRING']) and $_SERVER['QUERY_STRING'] !== '')
+				$uri = $_SERVER['QUERY_STRING'];
+			elseif(isset($_SERVER['PATH_INFO']) and $_SERVER['PATH_INFO'] !== '')
+				$uri = $_SERVER['PATH_INFO'];
+			else
+				$uri = '';
+
+			$uri = $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['SERVER_NAME'].$uri.'/';
+
+			return $uri;
+
+		}
 
 
 		
+		/**
+		* find controller (k - controller)
+		*/
+
+		function kfind($items = array(), $method = 'get'){
+			
+			$size = sizeof($items);
+			$action = 'index';
+			
+			if ($size == 0) {// mainpage
+				$cname = 'main';
+			}	
+			else {
+				$cname = array_shift($items);
+				if ($size > 2)
+					$action = $items[0];
+			}
+
+			if ($control = kload($cname)){ //autoload class
+				
+				if (method_exists($control, $action)){
+					if ($size > 2)
+						$action = array_shift($items);
+					$func = $action;
+					$args = $items;
+				}
+				elseif (method_exists($control, $method)){ //REST API post, get ... 
+					$func = $method;
+					$args =  $items;
+				}	
+			
+				if ($func)
+					return array('class'=>$cname, 'func'=>$func, 'args'=>$args);
+
+			}
+
+				
+			if (function_exists($func = $cname.'_'.$action)){
+				$action = array_shift($items);
+				$args = $items;
+			}
+			elseif (function_exists($func = $cname.'_'.$method)){
+				$args = $items;
+			}
+			elseif (function_exists($func = $cname)){
+				$args = $items;
+			}	
+			else
+				return False;
+					
+			return array('class'=>False, 'func'=>$fname, 'args'=>$arguments);	
+
+		}
+
+
+
+		/**
+		* Base load controller class in 
+		*/
+
+		function kcontroller($cname, $path){
+
+			if ($path == null)
+				$path = 'app'.DIRECTORY_SEPARATOR.'controllers'.DIRECTORY_SEPARATOR;
+			
+
+			if (!class_exists($cname)) {
+				$cfile = $path.'.php';
+				if (file_exists($cfile)) 
+					require ($cfile);
+				else
+					return False;
+			}
+
+			return new $cname();
+		}
+		
+		
+
+
 		function run() {
 			
 			$items = $this->parser();
@@ -62,7 +136,7 @@
 
 		
 		
-		function findfunc($items = array(), $method = "get") {
+		function kfindfunc($items = array(), $method = "get") {
 
 			$size = sizeof($items);
 			$action = 'index';
@@ -116,7 +190,7 @@
 
 
 
-		function loadclass($cname){
+		function kload($cname){
 
 			if (!class_exists($cname)) {
 				$cfile = 'app'.DIRECTORY_SEPARATOR.'controllers'.DIRECTORY_SEPARATOR.$cname.'.php';
@@ -161,14 +235,3 @@
 		function er404() {
 			echo '404 no find page';
 		}  
-
-
-	}	
-
-
-		
-
-
-
-
-
