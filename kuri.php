@@ -120,18 +120,6 @@
 
 			return new $cname();
 		}
-		
-		
-
-
-		function run() {
-			
-			$items = $this->parser();
-			$result = $this->findfunc($items['items'], $items['method']);
-			$this->loadfunc($result['func'], $result['class'], $result['args']);
-			
-
-		}
 
 
 		
@@ -190,7 +178,7 @@
 
 
 
-		function kload($cname){
+		function kload($cname, $p){
 
 			if (!class_exists($cname)) {
 				$cfile = 'app'.DIRECTORY_SEPARATOR.'controllers'.DIRECTORY_SEPARATOR.$cname.'.php';
@@ -224,9 +212,57 @@
 		}
 
 
+		/**
+		* зависимые функции
+		*/
 
-		//папка = контрол, метод = файл, все остально параметры
-		function view (){
+		function run($url = null){
+
+			if ($url == null)
+				$url = kuri();
+
+			$params = kparser($url);
+			$result = kfind($params['items']);
+			
+			return loadfunc($result['func'], $result['class'], $result['args']);
+
+		}	
+
+
+
+
+
+		//load control
+		function kaction($class, $action, $path = null) {
+
+			if (!class_exists($class)){
+				$cfile = $path.$cname.'.php';
+				if (file_exists($cfile)) 
+					require ($cfile);
+				else
+					return False;
+
+			}
+			
+			
+		}	
+
+		
+
+		
+		function view ($view, $data = array(), $layer = null){
+			
+			ob_start();
+        		
+        	if(is_array($data))
+            	extract($data);
+        		
+        	header('Content-Type: text/html; charset=utf8', true, 200);
+        	require $view;
+        	       	
+        	echo trim(ob_get_clean());
+        	
+        	return;
 
 		}
 
