@@ -254,13 +254,17 @@
 			
 			ob_start();
         		
-        	if(is_array($data))
+        	if (is_array($data))
             	extract($data);
-        		
-        	header('Content-Type: text/html; charset=utf8', true, 200);
-        	require $view;
-        	       	
-        	echo trim(ob_get_clean());
+
+            if ($layer !== null){
+            	$content = view($view, $data);
+            	require $layer;
+            }
+            else
+            	require $view;
+   	       	       	
+        	return trim(ob_get_clean());
         	
         	return;
 
