@@ -266,9 +266,7 @@
    	       	       	
         	return trim(ob_get_clean());
         	
-        	return;
-
-		}
+       	}
 
 
 
