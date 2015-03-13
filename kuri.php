@@ -233,7 +233,10 @@
 
 
 		//load control
-		function kaction($class, $action, $path = null) {
+		function action($class, $action, $path = null) {
+
+			if ($path == null)
+				$path = $_SERVER['DOCUMENT_ROOT'].'app/controllers/';
 
 			if (!class_exists($class)){
 				$cfile = $path.$cname.'.php';
@@ -241,14 +244,12 @@
 					require ($cfile);
 				else
 					return False;
-
 			}
 			
 			
 		}	
 
 		
-
 		
 		function view ($view, $data = array(), $layer = null){
 			
@@ -267,6 +268,25 @@
         	return trim(ob_get_clean());
         	
        	}
+
+
+       	/*function set($name = null, $value = null) {
+
+       		static $vars = array();
+
+       		if ($name == null)
+       			return $vars;	
+
+       		if ($value == null){
+       			if(array_key_exists($name, $vars)) 
+       				return $vars[$name];
+       		}
+       		else
+       			$vars[$name] = $value; 
+
+			return null;
+       	
+       	}*/
 
 
 
