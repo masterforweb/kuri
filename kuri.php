@@ -57,7 +57,7 @@
 				$cname = 'main';
 			}	
 			else {
-				$cname = array_shift($items);
+				$cname = array_shift($items); //title action
 				if ($size > 2)
 					$action = $items[0];
 			}
@@ -80,7 +80,7 @@
 
 			}
 
-				
+						
 			if (function_exists($func = $cname.'_'.$action)){
 				$action = array_shift($items);
 				$args = $items;
@@ -94,9 +94,24 @@
 			else
 				return False;
 					
-			return array('class'=>False, 'func'=>$fname, 'args'=>$arguments);	
+			return array('class'=>False, 'func'=>$func, 'args'=>$arguments);	
 
 		}
+
+
+		function kload($cname, $p){
+
+			if (!class_exists($cname)) {
+				$cfile = 'app'.DIRECTORY_SEPARATOR.'controllers'.DIRECTORY_SEPARATOR.$cname.'.php';
+				if (file_exists($cfile)) 
+					require ($cfile);
+				else
+					return False;
+			}
+
+			return new $cname();
+		}
+		
 
 
 
@@ -170,7 +185,7 @@
 			else
 				return $this->er404();
 					
-			return array('class'=>False, 'func'=>$fname, 'args'=>$arguments);	
+			return array('class'=>False, 'func'=>$func, 'args'=>$arguments);	
 					
 
 		}
@@ -178,20 +193,7 @@
 
 
 
-		function kload($cname, $p){
-
-			if (!class_exists($cname)) {
-				$cfile = 'app'.DIRECTORY_SEPARATOR.'controllers'.DIRECTORY_SEPARATOR.$cname.'.php';
-				if (file_exists($cfile)) 
-					require ($cfile);
-				else
-					return False;
-			}
-
-			return new $cname();
-		}
 		
-
 		function loadfunc($func, $class = False, $args = array()) {
 
 			if ($class == False) {
@@ -212,23 +214,9 @@
 		}
 
 
-		/**
-		* зависимые функции
-		*/
+		
 
-		function action($url = null){
-
-			if ($url == null)
-				$url = kuri();
-
-			$params = kparser($url);
-			$result = kfind($params['items']);
-			
-			return loadfunc($result['func'], $result['class'], $result['args']);
-
-		}	
-
-	
+				
 		
 		function view ($view, $data = array(), $layer = null){
 			
@@ -266,6 +254,31 @@
 			return null;
        	
        	}*/
+
+
+
+		if (!function_exists('action')) {
+
+			
+			function action($url = null){
+			
+				if ($url == null)
+					$url = kuri();
+				$params = kparser($url);
+				$result = kfind($params['items']);
+				
+				return loadfunc($result['func'], $result['class'], $result['args']);
+				
+			}	
+
+		}		
+
+
+
+
+
+
+
 
 
 
