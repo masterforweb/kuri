@@ -216,7 +216,7 @@
 		* зависимые функции
 		*/
 
-		function run($url = null){
+		function action($url = null){
 
 			if ($url == null)
 				$url = kuri();
@@ -228,28 +228,7 @@
 
 		}	
 
-
-
-
-
-		//load control
-		function action($class, $action, $path = null) {
-
-			if ($path == null)
-				$path = $_SERVER['DOCUMENT_ROOT'].'app/controllers/';
-
-			if (!class_exists($class)){
-				$cfile = $path.$cname.'.php';
-				if (file_exists($cfile)) 
-					require ($cfile);
-				else
-					return False;
-			}
-			
-			
-		}	
-
-		
+	
 		
 		function view ($view, $data = array(), $layer = null){
 			
