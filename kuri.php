@@ -94,7 +94,7 @@
 			else
 				return False;
 					
-			return array('class'=>False, 'func'=>$func, 'args'=>$arguments);	
+			return array('class'=>False, 'func'=>$func, 'args'=>$args);	
 
 		}
 
@@ -267,7 +267,10 @@
 				$params = kparser($url);
 				$result = kfind($params['items']);
 				
-				return loadfunc($result['func'], $result['class'], $result['args']);
+				if ($result['func'] !== '') 
+					return loadfunc($result['func'], $result['class'], $result['args']);
+				else
+					return false;
 				
 			}	
 
