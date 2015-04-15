@@ -40,12 +40,16 @@
 			
 			if (!isset($_SERVER['REQUEST_SCHEME']) or $_SERVER['REQUEST_SCHEME'] == '')
 				$sheme = 'http';
-			else
+			else {
 				$sheme = $_SERVER['REQUEST_SCHEME'];
+			}
 
-			$uri = $sheme.'://'.$_SERVER['SERVER_NAME'].$uri.'/';
+			$result = $sheme.'://'.$_SERVER['SERVER_NAME'].'/';
 
-			return $uri;
+			if ($uri !== '')
+				$result .= $uri;
+
+			return $result;
 
 		}
 
