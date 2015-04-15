@@ -36,6 +36,7 @@
 			else
 				$uri = '';
 
+			$uri = trim($uri, '/');
 			$uri = $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['SERVER_NAME'].$uri.'/';
 
 			return $uri;
