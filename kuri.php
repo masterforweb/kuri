@@ -69,7 +69,7 @@
 			}	
 			else {
 				$cname = array_shift($items); //title action
-				if ($size > 2)
+				if ($size > 1)
 					$action = $items[0];
 			}
 
