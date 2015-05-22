@@ -248,7 +248,7 @@
        	}
 
 
-       	/*function set($name = null, $value = null) {
+       	function set($name = null, $value = null) {
 
        		static $vars = array();
 
@@ -264,7 +264,7 @@
 
 			return null;
        	
-       	}*/
+       	}
 
 
 
