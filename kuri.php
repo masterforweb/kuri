@@ -110,7 +110,7 @@
 		}
 
 
-		function kload($cname, $p){
+		function kload($cname, $p = ''){
 
 			if (!class_exists($cname)) {
 				$cfile = 'app'.DIRECTORY_SEPARATOR.'controllers'.DIRECTORY_SEPARATOR.$cname.'.php';
