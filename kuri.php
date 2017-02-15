@@ -33,8 +33,8 @@
 				$uri = $_SERVER['QUERY_STRING'];
 			elseif(isset($_SERVER['PATH_INFO']) and $_SERVER['PATH_INFO'] !== '')
 				$uri = $_SERVER['PATH_INFO'];
-			else
-				$uri = '';
+			elseif (isset($_SERVER['REQUEST_URI']) and $_SERVER['REQUEST_URI'] !== '')
+				$uri = $_SERVER['REQUEST_URI'];
 
 			$uri = trim($uri, '/');
 			
@@ -61,6 +61,8 @@
 
 		function kfind($items = array(), $method = 'get'){
 			
+			print_r($items);
+
 			$size = sizeof($items);
 			$action = 'index';
 			
@@ -72,6 +74,7 @@
 				if ($size > 1)
 					$action = $items[0];
 			}
+
 
 			if ($control = kload($cname)){ //autoload class
 				
@@ -91,7 +94,6 @@
 
 			}
 
-						
 			if (function_exists($func = $cname.'_'.$action)){
 				$action = array_shift($items);
 				$args = $items;
@@ -215,7 +217,6 @@
 			}
 			else {
 
-
 				if (is_array($args) and sizeof($args) > 0)
 					return call_user_func_array(array($class, $func), $args);
 				else
@@ -275,7 +276,9 @@
 			
 				if ($url == null)
 					$url = kuri();
+
 				$params = kparser($url);
+
 				$result = kfind($params['items']);
 				
 				if ($result['func'] !== '') 
@@ -286,14 +289,6 @@
 			}	
 
 		}		
-
-
-
-
-
-
-
-
 
 
 		function er404() {
