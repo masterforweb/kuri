@@ -60,8 +60,6 @@
 		*/
 
 		function kfind($items = array(), $method = 'get'){
-			
-			print_r($items);
 
 			$size = sizeof($items);
 			$action = 'index';
