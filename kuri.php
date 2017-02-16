@@ -8,7 +8,7 @@
 		
 
 
-		function kparser($uri) {
+		function kuparser($uri = '') {
 
 			$result = array();
 			
@@ -59,7 +59,7 @@
 		* find controller (k - controller)
 		*/
 
-		function kfind($items = array(), $method = 'get'){
+		function kufind($items = array(), $method = 'get'){
 
 			$size = sizeof($items);
 			$action = 'index';
@@ -74,7 +74,7 @@
 			}
 
 
-			if ($control = kload($cname)){ //autoload class
+			if ($control = kuload($cname)){ //autoload class
 				
 				if (method_exists($control, $action)){
 					if ($size > 2)
@@ -110,7 +110,7 @@
 		}
 
 
-		function kload($cname, $p = ''){
+		function kuload($cname, $p = ''){
 
 			if (!class_exists($cname)) {
 				$cfile = 'app'.DIRECTORY_SEPARATOR.'controllers'.DIRECTORY_SEPARATOR.$cname.'.php';
@@ -130,7 +130,7 @@
 		* Base load controller class in 
 		*/
 
-		function kcontroller($cname, $path){
+		function kucontroller($cname, $path){
 
 			if ($path == null)
 				$path = 'app'.DIRECTORY_SEPARATOR.'controllers'.DIRECTORY_SEPARATOR;
@@ -150,7 +150,7 @@
 
 		
 		
-		function kfindfunc($items = array(), $method = "get") {
+		function kufindfunc($items = array(), $method = "get") {
 
 			$size = sizeof($items);
 			$action = 'index';
@@ -205,7 +205,7 @@
 
 
 		
-		function loadfunc($func, $class = False, $args = array()) {
+		function kuloadfunc($func, $class = False, $args = array()) {
 
 			if ($class == False) {
 				if (is_array($args) and sizeof($args) > 0)
@@ -275,12 +275,12 @@
 				if ($url == null)
 					$url = kuri();
 
-				$params = kparser($url);
+				$params = kuparser($url);
 
-				$result = kfind($params['items']);
+				$result = kufind($params['items']);
 				
 				if ($result['func'] !== '') 
-					return loadfunc($result['func'], $result['class'], $result['args']);
+					return kuloadfunc($result['func'], $result['class'], $result['args']);
 				else
 					return false;
 				
