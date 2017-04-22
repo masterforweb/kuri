@@ -14,11 +14,24 @@
 			
 			$result = parse_url(urldecode($uri));
 			
-				if ($result['path'] !== '/') {
+			
+			/* корень пути с учетом подпапки */
+			$dirname = dirname($_SERVER['PHP_SELF']);
+
+			if ($dirname !== '/') {
+				$ldir = strlen($dirname);
+				$result['path'] = '/'.substr($result['path'], $ldir);
+			}
+			
+			/* определяем путь относительно url */
+			if ($result['path'] !== '/') {
 					$result['items'] = explode('/', trim($result['path'], '/'));
 				}
-
-				return $result;
+			
+			
+			$result['method'] = $_SERVER['REQUEST_METHOD'];
+			
+			return $result;
 		}
 
 		
@@ -277,7 +290,8 @@
 
 				$params = kuparser($url);
 
-				$result = kufind($params['items']);
+				
+				$result = kufind($params['items'], $params['method']);
 				
 				if ($result['func'] !== '') 
 					return kuloadfunc($result['func'], $result['class'], $result['args']);
