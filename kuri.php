@@ -1,23 +1,23 @@
 <?php 
-
 		/**
 		* kURI: return scheme, host, path, controller, action, items, http method 
 		* @license http://www.opensource.org/licenses/mit-license.html  MIT License
 		* @author АК Delfin <masterforweb@hotmail.com>
 		*/
 		
-
-
 		function kuparser($uri = '') {
-
 			$result = array();
 			
 			$result = parse_url(urldecode($uri));
+
+			if ($_SERVER['PHP_SELF'] !== '')
+			   $spath = $_SERVER['PHP_SELF'];
+			elseif ($_SERVER['SCRIPT_NAME'] !== '')
+				$spath = $_SERVER['SCRIPT_NAME'];
 			
 			
 			/* корень пути с учетом подпапки */
-			$dirname = dirname($_SERVER['PHP_SELF']);
-
+			$dirname = dirname($spath);
 			if ($dirname !== '/') {
 				$ldir = strlen($dirname);
 				$result['path'] = '/'.substr($result['path'], $ldir);
@@ -33,22 +33,18 @@
 			
 			return $result;
 		}
-
 		
 		/**
 		* current url (k - current url)
 		*/
-
 		function kuri() {
 			
-
 			if (isset($_SERVER['QUERY_STRING']) and $_SERVER['QUERY_STRING'] !== '')
 				$uri = $_SERVER['QUERY_STRING'];
 			elseif(isset($_SERVER['PATH_INFO']) and $_SERVER['PATH_INFO'] !== '')
 				$uri = $_SERVER['PATH_INFO'];
 			elseif (isset($_SERVER['REQUEST_URI']) and $_SERVER['REQUEST_URI'] !== '')
 				$uri = $_SERVER['REQUEST_URI'];
-
 			$uri = trim($uri, '/');
 			
 			if (!isset($_SERVER['REQUEST_SCHEME']) or $_SERVER['REQUEST_SCHEME'] == '')
@@ -56,24 +52,16 @@
 			else {
 				$sheme = $_SERVER['REQUEST_SCHEME'];
 			}
-
 			$result = $sheme.'://'.$_SERVER['SERVER_NAME'].'/';
-
 			if ($uri !== '')
 				$result .= $uri;
-
 			return $result;
-
 		}
-
-
 		
 		/**
 		* find controller (k - controller)
 		*/
-
 		function kufind($items = array(), $method = 'get'){
-
 			$size = sizeof($items);
 			$action = 'index';
 			
@@ -85,8 +73,6 @@
 				if ($size > 1)
 					$action = $items[0];
 			}
-
-
 			if ($control = kuload($cname)){ //autoload class
 				
 				if (method_exists($control, $action)){
@@ -102,9 +88,7 @@
 			
 				if ($func)
 					return array('class'=>$cname, 'func'=>$func, 'args'=>$args);
-
 			}
-
 			if (function_exists($func = $cname.'_'.$action)){
 				$action = array_shift($items);
 				$args = $items;
@@ -119,12 +103,8 @@
 				return False;
 					
 			return array('class'=>False, 'func'=>$func, 'args'=>$args);	
-
 		}
-
-
 		function kuload($cname, $p = ''){
-
 			if (!class_exists($cname)) {
 				$cfile = 'app'.DIRECTORY_SEPARATOR.'controllers'.DIRECTORY_SEPARATOR.$cname.'.php';
 				if (file_exists($cfile)) 
@@ -132,23 +112,16 @@
 				else
 					return False;
 			}
-
 			return new $cname();
 		}
 		
-
-
-
 		/**
 		* Base load controller class in 
 		*/
-
 		function kucontroller($cname, $path){
-
 			if ($path == null)
 				$path = 'app'.DIRECTORY_SEPARATOR.'controllers'.DIRECTORY_SEPARATOR;
 			
-
 			if (!class_exists($cname)) {
 				$cfile = $path.'.php';
 				if (file_exists($cfile)) 
@@ -156,15 +129,11 @@
 				else
 					return False;
 			}
-
 			return new $cname();
 		}
-
-
 		
 		
 		function kufindfunc($items = array(), $method = "get") {
-
 			$size = sizeof($items);
 			$action = 'index';
 			
@@ -176,7 +145,6 @@
 				if ($size > 2)
 					$action = $items[0];
 			}
-
 			if ($control = $this->loadclass($cname)){ //autoload class
 				
 				if (method_exists($control, $action)){
@@ -192,9 +160,7 @@
 			
 				if ($func)
 					return array('class'=>$cname, 'func'=>$func, 'args'=>$args);
-
 			}
-
 				
 			if (function_exists($func = $cname.'_'.$action)){
 				$action = array_shift($items);
@@ -211,15 +177,9 @@
 					
 			return array('class'=>False, 'func'=>$func, 'args'=>$arguments);	
 					
-
 		}
-
-
-
-
 		
 		function kuloadfunc($func, $class = False, $args = array()) {
-
 			if ($class == False) {
 				if (is_array($args) and sizeof($args) > 0)
 					return call_user_func_array($func, $args);
@@ -227,18 +187,13 @@
 					return call_user_func($func);
 			}
 			else {
-
 				if (is_array($args) and sizeof($args) > 0)
 					return call_user_func_array(array($class, $func), $args);
 				else
 					return call_user_func(array($class, $func));
 			}	
-
 		}
-
-
 		
-
 				
 		
 		function view ($view, $data = array(), $layer = null){
@@ -247,7 +202,6 @@
         		
         	if (is_array($data))
             	extract($data);
-
             if ($layer !== null){
             	$content = view($view, $data);
             	require $layer;
@@ -258,38 +212,26 @@
         	return trim(ob_get_clean());
         	
        	}
-
-
        	function set($name = null, $value = null) {
-
        		static $vars = array();
-
        		if ($name == null)
        			return $vars;	
-
        		if ($value == null){
        			if(array_key_exists($name, $vars)) 
        				return $vars[$name];
        		}
        		else
        			$vars[$name] = $value; 
-
 			return null;
        	
        	}
-
-
-
 		if (!function_exists('action')) {
-
 			
 			function action($url = null){
 			
 				if ($url == null)
 					$url = kuri();
-
 				$params = kuparser($url);
-
 				
 				$result = kufind($params['items'], $params['method']);
 				
@@ -299,10 +241,7 @@
 					return false;
 				
 			}	
-
 		}		
-
-
 		function er404() {
 			echo '404 no find page';
 		}  
