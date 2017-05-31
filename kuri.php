@@ -181,8 +181,6 @@
 		
 		function kuloadfunc($func, $class = False, $args = array()) {
 			
-			echo $func."<br>";
-
 			if ($class == False) {
 				if (is_array($args) and sizeof($args) > 0)
 					return call_user_func_array($func, $args);
