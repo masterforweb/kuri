@@ -180,6 +180,9 @@
 		}
 		
 		function kuloadfunc($func, $class = False, $args = array()) {
+			
+			echo $func."<br>";
+
 			if ($class == False) {
 				if (is_array($args) and sizeof($args) > 0)
 					return call_user_func_array($func, $args);
@@ -234,14 +237,24 @@
 				$params = kuparser($url);
 				
 				$result = kufind($params['items'], $params['method']);
+
+				if (is_array($result)) {
 				
-				if ($result['func'] !== '') 
-					return kuloadfunc($result['func'], $result['class'], $result['args']);
-				else
-					return false;
+					if ($result['func'] !== '') 
+						return kuloadfunc($result['func'], $result['class'], $result['args']);
+					else
+						return false;
+				}
+				else {
+					if (!function_exists('err404')) {
+						echo '404 no find page';
+					}
+					else
+						return call_user_func('err404');	
+				}
 				
 			}	
 		}		
-		function er404() {
-			echo '404 no find page';
-		}  
+		
+		
+		
