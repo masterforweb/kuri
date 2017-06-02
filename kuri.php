@@ -39,12 +39,21 @@
 		*/
 		function kuri() {
 			
-			if (isset($_SERVER['QUERY_STRING']) and $_SERVER['QUERY_STRING'] !== '')
-				$uri = $_SERVER['QUERY_STRING'];
+			
+			if (isset($_SERVER['REQUEST_URI']) and $_SERVER['REQUEST_URI'] !== '')
+				$uri = $_SERVER['REQUEST_URI'];
 			elseif(isset($_SERVER['PATH_INFO']) and $_SERVER['PATH_INFO'] !== '')
 				$uri = $_SERVER['PATH_INFO'];
-			elseif (isset($_SERVER['REQUEST_URI']) and $_SERVER['REQUEST_URI'] !== '')
-				$uri = $_SERVER['REQUEST_URI'];
+
+			
+			/*get query*/
+			if (isset($_SERVER['QUERY_STRING']) and $_SERVER['QUERY_STRING'] !== ''){
+				if ($uri)	
+					$uri = str_replace($_SERVER['QUERY_STRING'], '',$uri);
+				else
+					$uri = $_SERVER['REQUEST_URI'];
+			}
+				
 			$uri = trim($uri, '/');
 			
 			if (!isset($_SERVER['REQUEST_SCHEME']) or $_SERVER['REQUEST_SCHEME'] == '')
