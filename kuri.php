@@ -99,6 +99,8 @@
 					return array('class'=>$cname, 'func'=>$func, 'args'=>$args);
 			}
 			
+			define('KURI_CNAME', $cname);
+			
 			$func_temp = str_replace('-', '_', $cname);
 			
 			if (function_exists($func = $func_temp.'_'.$action)){
