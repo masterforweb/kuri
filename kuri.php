@@ -101,11 +101,11 @@
 			
 			$func_temp = str_replace('-', '_', $cname);
 			
-			if (function_exists($func = $cname.'_'.$action)){
+			if (function_exists($func = $func_temp.'_'.$action)){
 				$action = array_shift($items);
 				$args = $items;
 			}
-			elseif (function_exists($func = $cname.'_'.$method)){
+			elseif (function_exists($func = $func_temp.'_'.$method)){
 				$args = $items;
 			}
 			elseif (function_exists($func = $func_temp)){
