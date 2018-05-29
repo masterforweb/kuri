@@ -242,11 +242,13 @@
        	}
 		if (!function_exists('action')) {
 			
-			function action($url = null){
+			function action($url = null, $prefix = ''){
 			
 				if ($url == null)
 					$url = kuri();
 				$params = kuparser($url);
+				
+				$params['items'][0] = $params['items'][0].'_'.$prefix;
 				
 				$result = kufind($params['items'], $params['method']);
 
