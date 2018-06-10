@@ -248,7 +248,7 @@
 					$url = kuri();
 				$params = kuparser($url);
 				
-				$params['items'][0] = $params['items'][0].'_'.$prefix;
+				$params['items'][0] = $params['items'][0].$prefix;
 				
 				$result = kufind($params['items'], $params['method']);
 
