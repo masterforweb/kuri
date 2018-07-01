@@ -241,9 +241,11 @@
 			return null;
        	
        	}
-		if (!function_exists('action')) {
+		
+
+	if (!function_exists('action')) {
 			
-			function action($url = null, $prefix = ''){
+			function action($url = null, $prefix = '', $autotype = 'html'){
 			
 				if ($url == null)
 					$url = kuri();
@@ -255,8 +257,15 @@
 
 				if (is_array($result)) {
 				
-					if ($result['func'] !== '') 
-						return kuloadfunc($result['func'], $result['class'], $result['args']);
+					if ($result['func'] !== '') { 
+						$data =  kuloadfunc($result['func'], $result['class'], $result['args']);
+						if ($autotype == 'json' or is_array($data)){
+							header("Content-type:application/json");
+							echo json_encode($data);
+						}
+						else	
+							return $data;		
+					}
 					else
 						return false;
 				}
@@ -270,6 +279,7 @@
 				
 			}	
 		}		
+		
 		
 		
 		
