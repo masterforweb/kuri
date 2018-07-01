@@ -96,7 +96,7 @@
 				}	
 			
 				if ($func)
-					return array('class'=>$cname, 'func'=>$func, 'args'=>$args);
+					return array('class'=>$control, 'func'=>$func, 'args'=>$args);
 			}
 			
 			define('KURI_CNAME', $cname);
@@ -118,6 +118,7 @@
 					
 			return array('class'=>False, 'func'=>$func, 'args'=>$args);	
 		}
+
 		function kuload($cname, $p = ''){
 			if (!class_exists($cname)) {
 				$cfile = 'app'.DIRECTORY_SEPARATOR.'controllers'.DIRECTORY_SEPARATOR.$cname.'.php';
