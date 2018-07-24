@@ -70,7 +70,7 @@
 		/**
 		* find controller (k - controller)
 		*/
-		function kufind($items = array(), $method = 'get'){
+		function kufind($items = array(), $method = 'get', $prefix = ''){
 			$size = sizeof($items);
 			$action = 'index';
 			
@@ -82,6 +82,10 @@
 				if ($size > 1)
 					$action = $items[0];
 			}
+
+			$cname .= $prefix;
+
+
 			if ($control = kuload($cname)){ //autoload class
 				
 				if (method_exists($control, $action)){
@@ -96,7 +100,7 @@
 				}	
 			
 				if ($func)
-					return array('class'=>$control, 'func'=>$func, 'args'=>$args);
+					return array('class'=>$cname, 'func'=>$func, 'args'=>$args);
 			}
 			
 			define('KURI_CNAME', $cname);
@@ -118,7 +122,6 @@
 					
 			return array('class'=>False, 'func'=>$func, 'args'=>$args);	
 		}
-
 		function kuload($cname, $p = ''){
 			if (!class_exists($cname)) {
 				$cfile = 'app'.DIRECTORY_SEPARATOR.'controllers'.DIRECTORY_SEPARATOR.$cname.'.php';
@@ -243,7 +246,7 @@
        	}
 		
 
-	if (!function_exists('action')) {
+		if (!function_exists('action')) {
 			
 			function action($url = null, $prefix = '', $autotype = 'html'){
 			
@@ -251,9 +254,7 @@
 					$url = kuri();
 				$params = kuparser($url);
 				
-				$params['items'][0] = $params['items'][0].$prefix;
-				
-				$result = kufind($params['items'], $params['method']);
+				$result = kufind($params['items'], $params['method'], $prefix);
 
 				if (is_array($result)) {
 				
