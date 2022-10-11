@@ -1,58 +1,86 @@
-## kURI
+# _kuri
 
-PHP >= 5.2.0
+Kuri is a PHP micro framework. Minimum code - maximum speed. Quick start
 
-1. Autorouting without regular. MVC standart role: controller/action/params
-2. Minimum code - maximum speed 
+## Installation
+
+It's recommended that you use [Composer](https://getcomposer.org/) to install Kuri.
+
+```bash
+$ composer require masterforweb/kuri
+```
+
+Autoroutes:
+
+https://{your domain}/{your function}/param1
+
+or
+
+https://{your domain}/{your class}/{funtion}/param1/param2
+
+or
+
+command line:
+php {application path}/index.php {your function} param
 
 
-RETURN:
-* shema (http, https)
-* domain (default _$_SERVER['QUERY_STRING']_)
-* method (GET, POST ...)
-* permanent MVC rule: control/action/params
+ 
+## Hello World
 
-[Auto Search function]
+```php
 
- - CLASSIC: find class $control and method $action
- - REST: find class $control and method (get, post)
- - SMALL APP: find function $control_$action
- - SHORT FUNC: find function $control 
+require 'vendor/autoload.php';
+
+kuri();
+
+function index() {
+	echo 'Hello World! Is index page';	
+}
+```
 
 
-[EXAMPLE FUNCTION]
+## Recommended practice: prefix _kuri
 
-require 'vendor/akdelf/kuri/kuri.php';
-$app = new kURI();
-$app->action();
+```php
 
-function main() {
-	echo 'mainpage';	
+require 'vendor/autoload.php';
+
+_kuri();
+
+function index_kuri() {
+	echo 'Hello World! Is index page';	
 }
 
+function id_kuri(int $id){
+	echo "result $id";
+}
 
-[EXAMPLE MVC CLASS]
-path: domain.my/news/id/$id
+```
 
-require 'vendor/akdelf/kuri/kuri.php';
-$app = new kURI();
+## Class example
 
+```php
 
-class news {
+_kuri();
+
+class news_kuri {
 	
 	function id($id){
 		echo 'ID ='.$id;
-	}	
+	}
 
 }
 
+```
 
-[EXAMPLE AUTO RESTfull CLASS]
 
-require 'vendor/akdelf/kuri/kuri.php';
-$result = action();
+## GET, POST
 
-class news {
+```php
+
+_kuri();
+
+class news_kuri {
 	
 	function get($id){
 		echo 'ID ='.$id;
@@ -63,5 +91,30 @@ class news {
 
 	}
 
+}
+
+```
+
+
+## return array => 200 OK Content-Type: application/json
+
+```php
+
+_kuri();
+
+class api_kuri {
+
+	function about(){
+		return [
+			'name' => 'masterforweb',
+			'mail' => 'masterforweb@hotmail.com',
+			'product' => 'kuri'
+		];
+	}
 
 }
+
+```
+
+
+job offers: masterforweb@hotmail.com
