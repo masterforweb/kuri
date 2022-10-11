@@ -32,6 +32,11 @@ function kuri_parser($url = '')
     return $result;
 }
 
+
+
+
+
+
 /**
 * Find console arguments
 *
@@ -341,14 +346,23 @@ function kuloadfunc($func, $class = false, $args = array())
                 return kuri_http_error(404);
             }
         } else {
-            return call_user_func($func);
+            try {
+                return call_user_func($func);
+            } catch (Error $e) {
+                return kuri_http_error(404);
+            }    
+
         }
     } else {
         if (is_array($args) and sizeof($args) > 0) {
             return call_user_func_array(array($class, $func), $args);
         }
 			
-        return call_user_func(array($class, $func));
+        try {
+            return call_user_func(array($class, $func));
+        } catch (Error $e) {
+            return kuri_http_error(404);
+        }      
     }
 }
 
@@ -388,17 +402,7 @@ function kuri_real_params($func, $class = null)
 /**
  *  local handler errors
  */
-/* set_error_handler('kuri_error');
 
-function kuri_error($errno, $errstr, $errfile, $errline)
-{
-    if ($errno == E_RECOVERABLE_ERROR) {
-        $str = "VIEW: <b>E_RECOVERABLE_ERROR<b> {$errstr} FILE: {$errfile}  LINE:  {$errline}<br>";
-        echo $str;
-    }
-
-    return false;
-} */
 
 /** Find function error
 *  @return string http code error
@@ -422,9 +426,9 @@ function kuri_http_error($code)
  *
  * @return mixed
  */
-function _kuri($currurl = null, $charset = 'utf-8')
+function _kuri($currurl = null, $charset = 'utf-8', $autotype = true)
 {
-    return kuri(null, '_kuri', $charset);
+    return kuri(null, '_kuri', $charset, $autotype);
 }
 
 /**
