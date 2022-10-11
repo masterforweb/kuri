@@ -1,6 +1,6 @@
 # _kuri
 
-Kuri is a PHP micro framework. Minimum code - maximum speed. Quick start
+Kuri is a PHP micro framework. Minimum code - maximum speed. Quick start your application and MVP.
 
 ## Installation
 
@@ -117,4 +117,4 @@ class api_kuri {
 ```
 
 
-Collaboration: masterforweb@hotmail.com
+masterforweb@hotmail.com
