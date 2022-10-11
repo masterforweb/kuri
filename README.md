@@ -117,4 +117,4 @@ class api_kuri {
 ```
 
 
-job offers: masterforweb@hotmail.com
+Collaboration: masterforweb@hotmail.com
