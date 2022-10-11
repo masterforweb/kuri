@@ -7,7 +7,7 @@ Kuri is a PHP micro framework. Minimum code - maximum speed. Quick start your ap
 It's recommended that you use [Composer](https://getcomposer.org/) to install Kuri.
 
 ```bash
-$ composer require masterforweb/kuri
+composer require masterforweb/kuri
 ```
 
 Autoroutes:
