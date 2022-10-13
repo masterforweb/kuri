@@ -106,10 +106,10 @@ _kuri();
 
 
 function about_kuri(){
-	return [
-        'author' => 'masterforweb',
-        'email'  => 'masterforweb@hotmail.com',
-        'name'   => 'kuri'
+    return [
+       'author' => 'masterforweb',
+       'email'  => 'masterforweb@hotmail.com',
+       'name'   => 'kuri'
     ];
 }
 
