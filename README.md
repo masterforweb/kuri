@@ -100,21 +100,31 @@ class news_kuri {
 
 ```php
 
+require 'vendor/autoload.php';
+
 _kuri();
 
-class api_kuri {
 
-	function about(){
-		return [
-			'name' => 'masterforweb',
-			'mail' => 'masterforweb@hotmail.com',
-			'product' => 'kuri'
-		];
-	}
-
+function about_kuri(){
+	return [
+        'author' => 'masterforweb',
+        'email'  => 'masterforweb@hotmail.com',
+        'name'   => 'kuri'
+    ];
 }
+
+
+```
+
+```bash
+curl -I http://kuri.dv/about
+HTTP/1.1 200 OK
+Content-Type: application/json; utf-8
+
+curl  http://kuri.dv/about 
+{"author":"masterforweb","email":"masterforweb@hotmail.com","name":"kuri"}
 
 ```
 
 
-masterforweb@hotmail.com
+#opentowork masterforweb@hotmail.com 
